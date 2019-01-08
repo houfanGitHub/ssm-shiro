@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<context:component-scan base-package="com.ssm.shiro.controller"/>
+
+	<mvc:default-servlet-handler/>
+	<mvc:annotation-driven/>
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<!-- 开启shiro框架注解支持 -->
+    <bean id="defaultAdvisorAutoProxyCreator" 
+        class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+            <!-- 必须使用cglib方式为Action对象创建代理对象 -->
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+    
+    <!-- 配置shiro框架提供的切面类，用于创建代理对象 -->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    	<property name="securityManager" ref="securityManager"></property>
+    </bean>
+    
+    <!-- 自定义异常处理-->
+    <bean class="com.ssm.shiro.exception.MyExceptionResolver"></bean> 
+    
+    
+</beans>
