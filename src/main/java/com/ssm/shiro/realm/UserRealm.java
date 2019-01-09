@@ -41,9 +41,11 @@ public class UserRealm extends AuthorizingRealm {
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		Session session = SecurityUtils.getSubject().getSession();
 		User user = (User) session.getAttribute("user");
-		Role role = roleService.findByUid(user.getRid());
+		Role role = null;
 		List<Permission> permissionList = null;
 		try {
+			role = roleService.findByUid(user.getRid());
+			
 			List<RolePermissionKey> rolePermissionKeyList = rolePermissionKeyService.findByRid(user.getRid());
 			
 			if(rolePermissionKeyList != null) {
