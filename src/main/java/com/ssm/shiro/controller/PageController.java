@@ -13,7 +13,7 @@ public class PageController {
 	}
  
 	@RequestMapping("/page/{returnPage}")
-	public String index(@PathVariable(value="returnPage")String returnPage) {
+	public String page(@PathVariable(value="returnPage")String returnPage) {
 		return returnPage;
 	}
 }
