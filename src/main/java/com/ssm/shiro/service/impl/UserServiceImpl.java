@@ -31,4 +31,13 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public List<User> findUserByNotRid(Integer rid) {
+		UserExample example = new UserExample();
+		Criteria createCriteria = example.createCriteria();
+		createCriteria.andRidNotEqualTo(rid);
+		List<User> selectByExample = userMapper.selectByExample(example);
+		return selectByExample;
+	}
+
 }

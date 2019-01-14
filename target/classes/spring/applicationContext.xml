@@ -32,5 +32,4 @@
     <!-- 自定义异常处理-->
     <bean class="com.ssm.shiro.exception.MyExceptionResolver"></bean> 
     
-    
 </beans>

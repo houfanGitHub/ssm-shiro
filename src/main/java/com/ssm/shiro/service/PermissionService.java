@@ -8,4 +8,6 @@ public interface PermissionService {
 
 	List<Permission> findByPidList(List<Integer> pidList);
 
+	List<Permission> findAll();
+
 }

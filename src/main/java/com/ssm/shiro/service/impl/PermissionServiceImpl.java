@@ -27,4 +27,9 @@ public class PermissionServiceImpl implements PermissionService {
 		return permissionMapper.selectByExample(example);
 	}
 
+	@Override
+	public List<Permission> findAll() {
+		return permissionMapper.selectByExample(null);
+	}
+
 }

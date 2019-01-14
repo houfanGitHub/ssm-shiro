@@ -12,7 +12,8 @@
 	<div>
 		<h2>顶部标题</h2>
 		<p style="text-align:right">
-			<shiro:principal property="username" />|
+			<shiro:principal />|
+<%-- 			<shiro:principal property="username" />| --%>
 			<a href="${pageContext.request.contextPath }/logout">退出</a>
 		</p>
 	</div>

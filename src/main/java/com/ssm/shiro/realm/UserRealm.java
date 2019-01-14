@@ -13,6 +13,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,9 @@ public class UserRealm extends AuthorizingRealm {
 				for (RolePermissionKey rolePermissionKey : rolePermissionKeyList) {
 					pidList.add(rolePermissionKey.getPid());
 				}
-				permissionList = permissionService.findByPidList(pidList);
+				if(pidList.size() > 0) {
+					permissionList = permissionService.findByPidList(pidList);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,7 +85,8 @@ public class UserRealm extends AuthorizingRealm {
 		}
 		if(user != null) {
 			SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(
-					user, 
+					user.getUsername(),
+//					user, 
 					user.getPassword(), 
 					ByteSource.Util.bytes(user.getUsername()), 
 					getName());
@@ -95,5 +99,14 @@ public class UserRealm extends AuthorizingRealm {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * 清空当前用户缓存
+	 */
+	public void clearCached() {
+		PrincipalCollection principals = SecurityUtils.getSubject()
+	            .getPrincipals();
+	    super.clearCache(principals);
+	}
+	
 }

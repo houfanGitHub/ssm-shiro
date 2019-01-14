@@ -6,4 +6,6 @@ public interface RoleService {
 
 	Role findByUid(Integer rid);
 
+	Role findByRoleName(String roleName);
+
 }

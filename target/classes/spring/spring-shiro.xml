@@ -2,17 +2,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
+        <property name="filters">
+        	<util:map>
+        		<entry key="mylogin" value-ref="myFormAuthenticationFilter"></entry>
+        	</util:map>
+        </property>
         <property name="loginUrl" value="/user/login"/>
 <!--         <property name="successUrl" value="/page/main"></property> -->
 <!--         <property name="unauthorizedUrl" value="/page/unauthorized"></property> -->
         <property name="filterChainDefinitions">
             <value>
+            	/user/login=mylogin
                 /logout = logout
                 /images/**=anon 
              	/js/**=anon
@@ -24,6 +31,8 @@
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="userRealm"/>
+        <!-- 在安全管理器中注入缓存管理器 -->
+		<property name="cacheManager" ref="cacheManager"></property>
     </bean>
     
         <!-- Realm实现 -->
@@ -42,4 +51,12 @@
     <!-- Shiro生命周期处理器--> 
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>  
      
+     <!-- shiro不退出再次登录处理 -->
+    <bean id="myFormAuthenticationFilter" class="com.ssm.shiro.filter.MyFormAuthenticationFilter"></bean>
+    
+    <!-- 注册ehcache缓存管理器 -->
+	<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+<!-- 		注册配置文件的路径 -->
+		<property name="cacheManagerConfigFile" value="classpath:config/ehcache.xml"></property>
+	</bean>
 </beans>

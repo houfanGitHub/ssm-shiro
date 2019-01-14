@@ -8,4 +8,6 @@ public interface RolePermissionKeyService {
 
 	List<RolePermissionKey> findByRid(Integer rid);
 
+	void updatePermission(String username, int rid, int[] permissions);
+
 }
